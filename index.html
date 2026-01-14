@@ -13,9 +13,12 @@
         height: 100%;
         background: black;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        color: white;
+        font-family: sans-serif;
     }
 
     #finger {
@@ -23,6 +26,13 @@
         cursor: pointer;
         animation: pulse 1.2s infinite;
         user-select: none;
+        text-align: center;
+    }
+
+    #fingerText {
+        margin-top: 20px;
+        font-size: 5vw;
+        text-align: center;
     }
 
     @keyframes pulse {
@@ -55,6 +65,7 @@
 <body>
 
 <div id="finger">🖕</div>
+<div id="fingerText">toca aquí payaso</div>
 
 <div id="videoContainer">
     <video id="video" controls autoplay>
@@ -66,15 +77,17 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const finger = document.getElementById("finger");
+    const fingerText = document.getElementById("fingerText");
     const videoContainer = document.getElementById("videoContainer");
     const video = document.getElementById("video");
 
     finger.addEventListener("click", () => {
-        // Mostrar contenedor y ocultar el botón
+        // Mostrar contenedor de vídeo y ocultar el dedo y texto
         videoContainer.style.display = "flex";
         finger.style.display = "none";
+        fingerText.style.display = "none";
 
-        // Reproducción con sonido (no muted)
+        // Reproducción con sonido
         video.muted = false;
         video.currentTime = 0;
 
