@@ -3,48 +3,42 @@ const finger = document.getElementById("finger");
 const container = document.getElementById("videoContainer");
 const video = document.getElementById("video");
 
-// Anti botón atrás
+// Anti botón atrás parcial
 history.pushState(null, "", location.href);
-window.onpopstate = () => history.go(1);
+window.onpopstate = () => history.pushState(null, "", location.href);
 
 finger.addEventListener("click", () => {
 
-    // Vibración
+    // Vibración breve
     if (navigator.vibrate) {
         navigator.vibrate([300, 100, 300, 100, 500]);
     }
 
-    // Mostrar contenedor
+    // Mostrar contenedor de vídeo
     container.style.display = "flex";
 
-    // Ajustes de vídeo
+    // Preparar vídeo
     video.muted = false;
     video.volume = 1.0;
     video.currentTime = 0;
 
-    // Reproducción FORZADA tras interacción
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(err => {
-            console.log("Autoplay bloqueado:", err);
-        });
-    }
+    // Reproducción segura tras interacción
+    video.play().catch(err => {
+        console.warn("Autoplay bloqueado:", err);
+    });
 
-    // Fullscreen si es posible
-    if (video.requestFullscreen) video.requestFullscreen();
-    else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+    // Fullscreen si el navegador lo permite
+    const fsFunc = video.requestFullscreen || video.webkitRequestFullscreen || video.msRequestFullscreen;
+    if (fsFunc) fsFunc.call(video).catch(e => console.warn("Fullscreen falló:", e));
 
-    // Bloqueo 60s
+    // Bloqueo aproximado de 60s contra botón atrás
     const lockUntil = Date.now() + 60000;
     const blocker = setInterval(() => {
-        history.pushState(null, "", location.href);
-        if (Date.now() > lockUntil) {
+        if (Date.now() < lockUntil) {
+            history.pushState(null, "", location.href);
+        } else {
             clearInterval(blocker);
         }
     }, 100);
 });
-</script>});
 </script>
-
-</body>
-</html>
