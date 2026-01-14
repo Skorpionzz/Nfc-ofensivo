@@ -69,7 +69,7 @@
 
 <div id="videoContainer">
     <video id="video" controls autoplay>
-        <!-- Cambia esto por tu vídeo -->
+        <!-- Cambia esto por tu vídeo exacto -->
         <source src="video.mp4" type="video/mp4">
     </video>
 </div>
@@ -82,12 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("video");
 
     finger.addEventListener("click", () => {
-        // Mostrar contenedor de vídeo y ocultar el dedo y texto
+        // Mostrar contenedor y ocultar el dedo y texto
         videoContainer.style.display = "flex";
         finger.style.display = "none";
         fingerText.style.display = "none";
 
-        // Reproducción con sonido
+        // Reproducción con sonido desde el primer toque
         video.muted = false;
         video.currentTime = 0;
 
